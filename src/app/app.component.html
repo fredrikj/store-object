@@ -1,11 +1,6 @@
-<app-counter *ngFor="let counter of counters; index as i"
+<button id="addCounter" (click)="addCounter()">Add Counter</button>
+<button id="removeCounter" (click)="removeCounter()">Remove Counter</button>
+<app-counter *ngFor="let counter of counters$ | async; index as i"
   [name]="i"
   [counter]="counter">
 </app-counter>
-<button id="addCounter" (click)="addCounter()">Add Counter</button>
-<button id="removeCounter" (click)="removeCounter()">Remove Counter</button>
-<ul>
-  <li *ngFor="let counter of counters$ | async">
-    {{counter}}
-  </li>
-</ul>

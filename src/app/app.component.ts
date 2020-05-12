@@ -3,7 +3,7 @@ import {CounterApi} from './counter-api';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {addCounter, removeCounter} from './store/counters.actions';
-import {counterIDs} from './store/counters.selectors';
+import {CounterFactoryService} from './counter-factory.service';
 
 @Component({
   selector: 'app-root',
@@ -11,16 +11,15 @@ import {counterIDs} from './store/counters.selectors';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  counters$: Observable<number[]>;
-  constructor(private store: Store<{counters: number[]}>) {
+  counters$: Observable<CounterApi[]>;
+
+  constructor(
+    private store: Store<{counters: number[]}>,
+    private counterFactory: CounterFactoryService
+  ) {
   }
-  counters: CounterApi[];
   ngOnInit(): void {
-    this.counters = [
-      new CounterApi(),
-      new CounterApi()
-    ];
-    this.counters$ = this.store.select(counterIDs);
+    this.counters$ = this.counterFactory.counters$;
   }
 
   addCounter() {
