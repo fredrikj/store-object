@@ -6,6 +6,8 @@ export interface AppState {
   [CountersKey]: CountersState;
 }
 
-export type CountersState = number[];
+export interface CountersState {
+  [counterId: string]: string;
+}
 
 export const counterIDs = createFeatureSelector<AppState, CountersState>(CountersKey);
