@@ -1,6 +1,4 @@
 <button id="addCounter" (click)="addCounter()">Add Counter</button>
-<button id="removeCounter" (click)="removeCounter()">Remove Counter</button>
-<app-counter *ngFor="let counter of countersArray$ | async; index as i"
-  [name]="i"
+<app-counter *ngFor="let counter of countersArray$ | async"
   [counter]="counter">
 </app-counter>

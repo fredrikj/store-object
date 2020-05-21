@@ -7,7 +7,11 @@ export interface AppState {
 }
 
 export interface CountersState {
-  [counterId: string]: string;
+  [counterId: string]: CounterData;
 }
 
-export const counterIDs = createFeatureSelector<AppState, CountersState>(CountersKey);
+export interface CounterData {
+  id: string;
+}
+
+export const counters = createFeatureSelector<AppState, CountersState>(CountersKey);

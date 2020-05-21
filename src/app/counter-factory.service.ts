@@ -7,13 +7,22 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {CounterApi} from './counter-api';
 import {
-  counterIDs,
+  counters,
   AppState,
-  CountersState
+  CountersState,
+  CounterData
 } from './store/counters.selectors';
 
-export interface CounterApis {
-  [id: string]: CounterApi;
+interface CounterApis {
+  [counterId: string]: CounterApi;
+}
+
+export interface CountersStatePlus {
+  [counterId: string]: CounterDataPlus;
+}
+
+export interface CounterDataPlus extends CounterData {
+  api: CounterApi;
 }
 
 @Injectable({
@@ -21,29 +30,32 @@ export interface CounterApis {
 })
 export class CounterFactoryService {
 
-  private counters: CounterApis = {};
+  private apis: CounterApis = {};
 
   constructor(private store: Store<AppState>) {
   }
 
-  public counters$: Observable<CounterApis> =
+  public counters$: Observable<CountersStatePlus> =
     this.store.pipe(
-      select(counterIDs),
+      select(counters),
       map((counterState: CountersState) =>
-        Object.keys(counterState).reduce(
-          (newObject, key) => {
-            this.counters[key] = this.counters[key] || new CounterApi();
+        Object.entries(counterState).reduce(
+          (newObject, [key, val]) => {
+            this.apis[key] = this.apis[key] || new CounterApi();
             return {
               ...newObject,
-              [key]: this.counters[key]
+              [key]: {
+                ...val,
+                api: this.apis[key]
+              }
             };
           }, {})
       )
     );
 
-  public countersArray$: Observable<CounterApi[]> =
+  public countersArray$: Observable<CounterDataPlus[]> =
     this.counters$.pipe(
-      map((counters: CounterApis) => Object.values(counters))
+      map((counters: CountersStatePlus) => Object.values(counters))
     )
 
 }

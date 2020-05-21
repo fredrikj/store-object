@@ -3,7 +3,7 @@ import {
   OnInit,
   Input,
 } from '@angular/core';
-import {CounterApi} from '../counter-api';
+import {CounterDataPlus} from '../counter-factory.service';
 
 @Component({
   selector: 'app-counter',
@@ -12,10 +12,7 @@ import {CounterApi} from '../counter-api';
 })
 export class CounterComponent implements OnInit {
   @Input()
-  counter: CounterApi;
-
-  @Input()
-  name: string;
+  counter: CounterDataPlus;
 
   constructor() { }
 

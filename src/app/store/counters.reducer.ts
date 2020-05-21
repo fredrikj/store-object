@@ -8,7 +8,7 @@ const _countersReducer = createReducer(
   initialState,
   on(addCounter,
     (state: CountersState, {counterId}) =>
-      ({...state, [counterId]: counterId})
+      ({...state, [counterId]: {id: counterId}})
   ),
   on(removeCounter,
      (state: CountersState, {counterId}) => {

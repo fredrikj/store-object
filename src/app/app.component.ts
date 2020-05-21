@@ -4,12 +4,9 @@ import {
 } from '@angular/core';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
-import {
-  addCounter,
-  removeCounter
-} from './store/counters.actions';
-import {CounterFactoryService} from './counter-factory.service';
-import {CounterApi} from './counter-api';
+import {addCounter} from './store/counters.actions';
+import {CounterFactoryService, CounterDataPlus} from './counter-factory.service';
+import {randomName} from './randomname';
 
 @Component({
   selector: 'app-root',
@@ -18,9 +15,7 @@ import {CounterApi} from './counter-api';
 })
 export class AppComponent implements OnInit {
 
-  countersArray$: Observable<CounterApi[]>;
-
-  private counterId = 0;
+  countersArray$: Observable<CounterDataPlus[]>;
 
   constructor(
     private store: Store<{counters: number[]}>,
@@ -33,11 +28,7 @@ export class AppComponent implements OnInit {
   }
 
   addCounter() {
-    this.store.dispatch(addCounter((this.counterId++).toString()));
-  }
-
-  removeCounter() {
-    this.store.dispatch(removeCounter((this.counterId--).toString()));
+    this.store.dispatch(addCounter(randomName()));
   }
 
 }
