@@ -1,4 +1,4 @@
 <button id="addCounter" (click)="addCounter()">Add Counter</button>
-<app-counter *ngFor="let counter of countersArray$ | async"
+<app-counter *ngFor="let counter of countersArray$ | async; trackBy: trackById"
   [counter]="counter">
 </app-counter>

@@ -31,4 +31,7 @@ export class AppComponent implements OnInit {
     this.store.dispatch(addCounter(randomName()));
   }
 
+  trackById(_index: number, counter: CounterDataPlus): string {
+    return counter.id;
+  }
 }
