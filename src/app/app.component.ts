@@ -2,9 +2,7 @@ import {
   Component,
   OnInit
 } from '@angular/core';
-import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
-import {addCounter} from './store/counters.actions';
 import {CounterFactoryService, CounterDataPlus} from './counter-factory.service';
 import {randomName} from './randomname';
 
@@ -18,7 +16,6 @@ export class AppComponent implements OnInit {
   countersArray$: Observable<CounterDataPlus[]>;
 
   constructor(
-    private store: Store<{counters: number[]}>,
     private counterFactory: CounterFactoryService
   ) {
   }
@@ -28,7 +25,7 @@ export class AppComponent implements OnInit {
   }
 
   addCounter() {
-    this.store.dispatch(addCounter(randomName()));
+    this.counterFactory.addCounter(randomName());
   }
 
   trackById(_index: number, counter: CounterDataPlus): string {

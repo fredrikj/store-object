@@ -12,6 +12,7 @@ import {
   CountersState,
   CounterData
 } from './store/counters.selectors';
+import {addCounter, removeCounter} from './store/counters.actions';
 
 interface CounterApis {
   [counterId: string]: CounterApi;
@@ -71,4 +72,11 @@ export class CounterFactoryService {
       map((counters: CountersStatePlus) => Object.values(counters))
     )
 
+  public addCounter(name: string) {
+    this.store.dispatch(addCounter(name));
+  }
+
+  public removeCounter(name: string) {
+    this.store.dispatch(removeCounter(name));
+  }
 }
