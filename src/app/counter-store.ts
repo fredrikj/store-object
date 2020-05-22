@@ -31,7 +31,7 @@ const removeProperty = (prop: string) => ({[prop]: _, ...rest}) => rest
 @Injectable({
   providedIn: 'root'
 })
-export class CounterFactoryService {
+export class CounterStore {
 
   private apis: CounterApis = {};
 

@@ -3,7 +3,7 @@ import {
   OnInit
 } from '@angular/core';
 import {Observable} from 'rxjs';
-import {CounterFactoryService, CounterDataPlus} from './counter-factory.service';
+import {CounterStore, CounterDataPlus} from './counter-store';
 import {randomName} from './randomname';
 
 @Component({
@@ -16,16 +16,16 @@ export class AppComponent implements OnInit {
   countersArray$: Observable<CounterDataPlus[]>;
 
   constructor(
-    private counterFactory: CounterFactoryService
+    private counterStore: CounterStore
   ) {
   }
 
   ngOnInit(): void {
-    this.countersArray$ = this.counterFactory.countersArray$;
+    this.countersArray$ = this.counterStore.countersArray$;
   }
 
   addCounter() {
-    this.counterFactory.addCounter(randomName());
+    this.counterStore.addCounter(randomName());
   }
 
   trackById(_index: number, counter: CounterDataPlus): string {

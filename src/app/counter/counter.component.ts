@@ -3,7 +3,7 @@ import {
   OnInit,
   Input,
 } from '@angular/core';
-import {CounterDataPlus, CounterFactoryService} from '../counter-factory.service';
+import {CounterDataPlus, CounterStore} from '../counter-store';
 
 @Component({
   selector: 'app-counter',
@@ -15,14 +15,14 @@ export class CounterComponent implements OnInit {
   counter: CounterDataPlus;
 
   constructor(
-    private counterFactory: CounterFactoryService
+    private counterStore: CounterStore
   ) { }
 
   ngOnInit(): void {
   }
 
   removeCounter() {
-    this.counterFactory.removeCounter(this.counter.id);
+    this.counterStore.removeCounter(this.counter.id);
   }
 
 }
