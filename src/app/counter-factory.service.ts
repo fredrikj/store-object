@@ -4,7 +4,7 @@ import {
   select
 } from '@ngrx/store';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import {CounterApi} from './counter-api';
 import {
   counters,
@@ -25,6 +25,8 @@ export interface CounterDataPlus extends CounterData {
   api: CounterApi;
 }
 
+const removeProperty = (prop: string) => ({[prop]: _, ...rest}) => rest
+
 @Injectable({
   providedIn: 'root'
 })
@@ -33,6 +35,14 @@ export class CounterFactoryService {
   private apis: CounterApis = {};
 
   constructor(private store: Store<AppState>) {
+  }
+
+  private removeSurplus(needed: string[]) {
+    const surplus = Object.keys(this.apis).filter( a => !needed.includes(a));
+    surplus.forEach((val) => {
+      this.apis = removeProperty(val)(this.apis);
+    });
+    console.log(`I have APIs ${Object.keys(this.apis)}`);
   }
 
   public counters$: Observable<CountersStatePlus> =
@@ -50,6 +60,9 @@ export class CounterFactoryService {
               }
             };
           }, {})
+      ),
+      tap((counterState: CountersStatePlus) =>
+        this.removeSurplus(Object.keys(counterState))
       )
     );
 
