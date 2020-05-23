@@ -5,6 +5,7 @@ import {
 import {Observable} from 'rxjs';
 import {CounterStore, CounterDataPlus} from './counter-store';
 import {randomName} from './randomname';
+import {addCounter} from './store/counters.actions';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +26,7 @@ export class AppComponent implements OnInit {
   }
 
   addCounter() {
-    this.counterStore.addCounter(randomName());
+    this.counterStore.dispatch(addCounter(randomName()));
   }
 
   trackById(_index: number, counter: CounterDataPlus): string {

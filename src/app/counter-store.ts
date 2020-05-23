@@ -12,7 +12,6 @@ import {
   CountersState,
   CounterData
 } from './store/counters.selectors';
-import {addCounter, removeCounter} from './store/counters.actions';
 
 interface CounterApis {
   [counterId: string]: CounterApi;
@@ -34,6 +33,10 @@ const removeProperty = (prop: string) => ({[prop]: _, ...rest}) => rest
 export class CounterStore {
 
   private apis: CounterApis = {};
+
+  public dispatch = this.store.dispatch.bind(this.store);
+
+  public select = this.store.select.bind(this.store);
 
   constructor(private store: Store<AppState>) {
   }
@@ -71,12 +74,4 @@ export class CounterStore {
     this.counters$.pipe(
       map((counters: CountersStatePlus) => Object.values(counters))
     )
-
-  public addCounter(name: string) {
-    this.store.dispatch(addCounter(name));
-  }
-
-  public removeCounter(name: string) {
-    this.store.dispatch(removeCounter(name));
-  }
 }
