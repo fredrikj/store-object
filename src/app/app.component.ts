@@ -3,9 +3,10 @@ import {
   OnInit
 } from '@angular/core';
 import {Observable} from 'rxjs';
-import {CounterStore, CounterDataPlus} from './counter-store';
 import {randomName} from './randomname';
 import {addCounter} from './store/counters.actions';
+import {Store} from '@ngrx/store';
+import {countersWithAPIArray, CounterDataPlus} from './store/counters.selectors';
 
 @Component({
   selector: 'app-root',
@@ -17,16 +18,16 @@ export class AppComponent implements OnInit {
   countersArray$: Observable<CounterDataPlus[]>;
 
   constructor(
-    private counterStore: CounterStore
+    private store: Store
   ) {
   }
 
   ngOnInit(): void {
-    this.countersArray$ = this.counterStore.countersArray$;
+    this.countersArray$ = this.store.select(countersWithAPIArray);
   }
 
   addCounter() {
-    this.counterStore.dispatch(addCounter(randomName()));
+    this.store.dispatch(addCounter(randomName()));
   }
 
   trackById(_index: number, counter: CounterDataPlus): string {
