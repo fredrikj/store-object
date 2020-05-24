@@ -15,24 +15,23 @@ export interface CounterData {
   id: string;
 }
 
-
-interface CounterApis {
-  [counterId: string]: CounterApi;
+export interface CountersStateWithAPI {
+  [counterId: string]: CounterDataWithAPI;
 }
 
-export interface CountersStatePlus {
-  [counterId: string]: CounterDataPlus;
-}
-
-export interface CounterDataPlus extends CounterData {
+export interface CounterDataWithAPI extends CounterData {
   api: CounterApi;
 }
 
 const removeProperty = (prop: string) => ({[prop]: _, ...rest}) => rest
 
+interface CounterApis {
+  [counterId: string]: CounterApi;
+}
+
 let apis: CounterApis = {};
 
-function removeSurplus(needed: CountersStatePlus) {
+function removeSurplus(needed: CountersStateWithAPI) {
   const surplus = Object.keys(apis).filter(a => !Object.keys(needed).includes(a));
   surplus.forEach((val) => {
     apis = removeProperty(val)(apis);
@@ -63,5 +62,5 @@ export const countersWithAPI = createSelector(
 
 export const countersWithAPIArray = createSelector(
   countersWithAPI,
-  (counters: CountersStatePlus) => Object.values(counters)
+  (counters: CountersStateWithAPI) => Object.values(counters)
 );
