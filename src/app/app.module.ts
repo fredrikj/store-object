@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { CounterComponent } from './counter/counter.component';
 import { StoreModule } from '@ngrx/store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {countersReducer} from './store/counters.reducer';
 
 @NgModule({
@@ -13,7 +14,10 @@ import {countersReducer} from './store/counters.reducer';
   ],
   imports: [
     BrowserModule,
-    StoreModule.forRoot({counters: countersReducer})
+    StoreModule.forRoot({counters: countersReducer}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
