@@ -1,27 +1,25 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
-import {CounterApi} from '../counter-api';
+import {CounterApi, ApiProperties} from '../counter-api';
 
 export const CountersKey = 'counters';
 
 export interface AppState {
-  [CountersKey]: CountersState;
+  [CountersKey]: CountersStoreState;
 }
 
-export interface CountersState {
-  [counterId: string]: CounterData;
+export interface CountersStoreState {
+  [counterId: string]: CounterStoreData;
 }
 
-export interface CounterData {
+export interface CounterStoreData {
   id: string;
 }
 
-export interface CountersStateWithAPI {
-  [counterId: string]: CounterDataWithAPI;
+export interface Counters {
+  [counterId: string]: CounterData;
 }
 
-export interface CounterDataWithAPI extends CounterData {
-  api: CounterApi;
-}
+export interface CounterData extends CounterStoreData, ApiProperties {}
 
 const removeProperty = (prop: string) => ({[prop]: _, ...rest}) => rest
 
@@ -31,7 +29,7 @@ interface CounterApis {
 
 let apis: CounterApis = {};
 
-function removeSurplus(needed: CountersStateWithAPI) {
+function removeSurplus(needed: Counters) {
   const surplus = Object.keys(apis).filter(a => !Object.keys(needed).includes(a));
   surplus.forEach((val) => {
     apis = removeProperty(val)(apis);
@@ -40,27 +38,27 @@ function removeSurplus(needed: CountersStateWithAPI) {
   return needed;
 }
 
-export const counters = createFeatureSelector<AppState, CountersState>(CountersKey);
+export const storeCounters = createFeatureSelector<AppState, CountersStoreState>(CountersKey);
 
-export const countersWithAPI = createSelector(
-  counters,
-  (counterState: CountersState) =>
+export const counters = createSelector(
+  storeCounters,
+  (countersState: CountersStoreState) =>
     removeSurplus(
-      Object.entries(counterState).reduce(
+      Object.entries(countersState).reduce(
         (newObject, [key, val]) => {
           apis[key] = apis[key] || new CounterApi();
           return {
             ...newObject,
             [key]: {
               ...val,
-              api: apis[key]
+              ...apis[key].properties
             }
           };
         }, {})
     )
 );
 
-export const countersWithAPIArray = createSelector(
-  countersWithAPI,
-  (counters: CountersStateWithAPI) => Object.values(counters)
+export const countersArray = createSelector(
+  counters,
+  (counters: Counters) => Object.values(counters)
 );

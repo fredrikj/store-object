@@ -6,7 +6,7 @@ import {Observable} from 'rxjs';
 import {randomName} from './randomname';
 import {addCounter} from './store/counters.actions';
 import {Store} from '@ngrx/store';
-import {countersWithAPIArray, CounterDataWithAPI} from './store/counters.selectors';
+import {countersArray, CounterData} from './store/counters.selectors';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,7 @@ import {countersWithAPIArray, CounterDataWithAPI} from './store/counters.selecto
 })
 export class AppComponent implements OnInit {
 
-  countersArray$: Observable<CounterDataWithAPI[]>;
+  countersArray$: Observable<CounterData[]>;
 
   constructor(
     private store: Store
@@ -23,14 +23,14 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.countersArray$ = this.store.select(countersWithAPIArray);
+    this.countersArray$ = this.store.select(countersArray);
   }
 
   addCounter() {
     this.store.dispatch(addCounter(randomName()));
   }
 
-  trackById(_index: number, counter: CounterDataWithAPI): string {
+  trackById(_index: number, counter: CounterData): string {
     return counter.id;
   }
 }

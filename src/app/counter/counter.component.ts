@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import {removeCounter} from '../store/counters.actions';
 import {Store} from '@ngrx/store';
-import {CounterDataWithAPI} from '../store/counters.selectors';
+import {CounterData} from '../store/counters.selectors';
 
 @Component({
   selector: 'app-counter',
@@ -14,7 +14,7 @@ import {CounterDataWithAPI} from '../store/counters.selectors';
 })
 export class CounterComponent implements OnInit {
   @Input()
-  counter: CounterDataWithAPI;
+  counter: CounterData;
 
   constructor(
     private store: Store
