@@ -21,7 +21,7 @@ export interface Counters {
 
 export interface CounterData extends CounterStoreData, ApiProperties {}
 
-const removeProperty = (prop: string) => ({[prop]: _, ...rest}) => rest
+const removeProperty = (prop: string) => (({[prop]: _, ...rest}) => rest);
 
 interface CounterApis {
   [counterId: string]: CounterApi;
@@ -42,20 +42,22 @@ export const storeCounters = createFeatureSelector<AppState, CountersStoreState>
 
 export const counters = createSelector(
   storeCounters,
-  (countersState: CountersStoreState) =>
-    removeSurplus(
-      Object.entries(countersState).reduce(
-        (newObject, [key, val]) => {
-          apis[key] = apis[key] || new CounterApi();
-          return {
-            ...newObject,
-            [key]: {
-              ...val,
-              ...apis[key].properties
-            }
-          };
-        }, {})
-    )
+  (countersState: CountersStoreState) => {
+    const counters: Counters = Object.entries(countersState).reduce(
+      (newObject, [key, val]) => {
+        apis[key] = apis[key] || new CounterApi();
+        return {
+          ...newObject,
+          [key]: {
+            ...val,
+            ...apis[key].properties
+          }
+        };
+      }, {}
+    );
+    removeSurplus(counters);
+    return counters;
+  }
 );
 
 export const countersArray = createSelector(
