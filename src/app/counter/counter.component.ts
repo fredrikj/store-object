@@ -4,8 +4,7 @@ import {
   Input,
 } from '@angular/core';
 import {removeCounter} from '../store/counters.actions';
-import {Store} from '@ngrx/store';
-import {CounterData} from '../store/counters.selectors';
+import {CounterData, CountersFacade} from '../store/counters.facade';
 
 @Component({
   selector: 'app-counter',
@@ -17,14 +16,14 @@ export class CounterComponent implements OnInit {
   counter: CounterData;
 
   constructor(
-    private store: Store
+    private countersFacade: CountersFacade
   ) { }
 
   ngOnInit(): void {
   }
 
   removeCounter() {
-    this.store.dispatch(removeCounter(this.counter.id));
+    this.countersFacade.dispatch(removeCounter(this.counter.id));
   }
 
 }

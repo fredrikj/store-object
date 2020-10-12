@@ -5,8 +5,7 @@ import {
 import {Observable} from 'rxjs';
 import {randomName} from './randomname';
 import {addCounter} from './store/counters.actions';
-import {Store} from '@ngrx/store';
-import {countersArray, CounterData} from './store/counters.selectors';
+import {CountersFacade, CounterData} from './store/counters.facade';
 
 @Component({
   selector: 'app-root',
@@ -18,16 +17,16 @@ export class AppComponent implements OnInit {
   countersArray$: Observable<CounterData[]>;
 
   constructor(
-    private store: Store
+    private countersFacade: CountersFacade
   ) {
   }
 
   ngOnInit(): void {
-    this.countersArray$ = this.store.select(countersArray);
+    this.countersArray$ = this.countersFacade.countersArray$;
   }
 
   addCounter() {
-    this.store.dispatch(addCounter(randomName()));
+    this.countersFacade.dispatch(addCounter(randomName()));
   }
 
   trackById(_index: number, counter: CounterData): string {
